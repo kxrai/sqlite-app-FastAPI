@@ -17,13 +17,21 @@ class User(BaseModel):
             raise ValueError('Invalid characters')
         return value
 
+    # @validator('birthday')
+    # def validate_birthday(cls, value):
+    #     logger.debug(f"Validating birthday in model: {value}")
+    #     if not fdb.valid_birthday(value):
+    #         logger.debug(f"Birthday validation failed for: {value}")
+    #         raise ValueError('Invalid birthday')
+    #     logger.debug(f"Birthday validation passed for: {value}")
+    #     return value
     @validator('birthday')
     def validate_birthday(cls, value):
-        logger.debug(f"Validating birthday in model: {value}")
-        if not fdb.valid_birthday(value):
-            logger.debug(f"Birthday validation failed for: {value}")
-            raise ValueError('Invalid birthday')
-        logger.debug(f"Birthday validation passed for: {value}")
+        today = date.today()
+        if value > today:
+            raise ValueError('Birthday cannot be in the future')
+        if value.year < 1920:
+            raise ValueError('Birthday cannot be before January 1, 1920')
         return value
 
     @validator('employee_number')
