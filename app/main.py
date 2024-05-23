@@ -5,7 +5,8 @@ import app.routers.user as user
 
 app = FastAPI()
 
-app.include_router(user.router, prefix="/users", tags=["users"])
+app.include_router(user.router, tags=["users"])
+# app.include_router(user.router, prefix="/users", tags=["users"])
 
 @app.on_event("startup")
 def startup():
