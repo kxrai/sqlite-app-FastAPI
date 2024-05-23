@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator, constr
 import app.fdb as fdb 
 import logging
 
@@ -10,6 +10,12 @@ class User(BaseModel):
     last_name: str
     birthday: str
     employee_number: int = Field(default=None, ge=1, le=999999)
+
+    @validator('first_name')
+    def validate_first_name(cls, value):
+        if not value.isalpha():
+            raise ValueError('Invalid characters')
+        return value
 
     @validator('birthday')
     def validate_birthday(cls, value):
