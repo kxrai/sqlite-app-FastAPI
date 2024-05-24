@@ -1,3 +1,4 @@
+from datetime import date, datetime
 from pydantic import BaseModel, Field, validator, constr
 import app.fdb as fdb 
 import logging
@@ -25,9 +26,17 @@ class User(BaseModel):
     #         raise ValueError('Invalid birthday')
     #     logger.debug(f"Birthday validation passed for: {value}")
     #     return value
+
     @validator('birthday')
+    
     def validate_birthday(cls, value):
+        print(f"Raw birthday value: {value}, type: {type(value)}")
         today = date.today()
+        print(f"Today's date: {today}, type: {type(today)}")
+        if isinstance(value, str):
+            print("Parsing birthday from string")
+            value = datetime.strptime(value, '%Y-%m-%d').date()
+            print(f"Parsed birthday value: {value}, type: {type(value)}")
         if value > today:
             raise ValueError('Birthday cannot be in the future')
         if value.year < 1920:
