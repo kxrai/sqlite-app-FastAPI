@@ -54,33 +54,37 @@ def test_add_user_valid_first_name(test_client):
         "first_name": "John",
         "last_name": "Doe",
         "birthday": "1985-05-20",
-        "employee_number": 123457
+        "employee_number": 124266
     })
     assert response.status_code == 200
+    print("test_add_user_valid_first_name passed")
 
 def test_add_user_empty_first_name(test_client):
     response = test_client.post("/add_user", json={
         "first_name": "",
         "last_name": "Doe",
         "birthday": "1985-05-20",
-        "employee_number": 123457
+        "employee_number": 124267
     })
     assert response.status_code == 422
+    print("test_add_user_empty_first_name")
 
 def test_add_user_special_char_first_name(test_client):
     response = test_client.post("/add_user", json={
         "first_name": "John@",
         "last_name": "Doe",
         "birthday": "1985-05-20",
-        "employee_number": 123457
+        "employee_number": 124268
     })
     assert response.status_code == 422
+    print("test_add_user_special_char_first_name passed")
 
 def test_add_user_numeric_first_name(test_client):
     response = test_client.post("/add_user", json={
         "first_name": "John123",
         "last_name": "Doe",
         "birthday": "1985-05-20",
-        "employee_number": 123457
+        "employee_number": 124269
     })
     assert response.status_code == 422
+    print("test_add_user_numeric_first_name passed")

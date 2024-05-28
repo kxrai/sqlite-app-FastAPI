@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from pydantic import BaseModel, Field, validator, constr
+from pydantic import BaseModel, Field, field_validator, constr
 import app.fdb as fdb 
 import logging
 
@@ -12,13 +12,13 @@ class User(BaseModel):
     birthday: str
     employee_number: int = Field(default=None, ge=1, le=999999)
 
-    @validator('first_name')
+    @field_validator('first_name')
     def validate_first_name(cls, value):
         if not value.isalpha():
             raise ValueError('Invalid characters')
         return value
 
-    # @validator('birthday')
+    # @field_validator('birthday')
     # def validate_birthday(cls, value):
     #     logger.debug(f"Validating birthday in model: {value}")
     #     if not fdb.valid_birthday(value):
@@ -27,7 +27,7 @@ class User(BaseModel):
     #     logger.debug(f"Birthday validation passed for: {value}")
     #     return value
 
-    @validator('birthday')
+    @field_validator('birthday')
     
     def validate_birthday(cls, value):
         print(f"Raw birthday value: {value}, type: {type(value)}")
@@ -43,7 +43,7 @@ class User(BaseModel):
             raise ValueError('Birthday cannot be before January 1, 1920')
         return value
 
-    @validator('employee_number')
+    @field_validator('employee_number')
     def validate_employee_number(cls, value):
         if value is not None:
             if not (1 <= value <= 999999):
